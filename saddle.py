@@ -124,9 +124,17 @@ class Uniforms():
 
 theBuffer = None
 theUniforms = None
+theShader = None
+
+# Surfaces that the user can view!
+surf1 = Ring()
+surf2 = Cylinder()
+surf3 = Spiral()
+surf4 = Squiggle()
+surf = surf1
 
 def init():
-    global theBuffer, theUniforms
+    global theBuffer, theUniforms, theShader
     # Normal OpenGL initializations
     glClearColor(0.5,0.5,0.5,1.0)
     glEnable(GL_DEPTH_TEST)
@@ -136,7 +144,7 @@ def init():
     fragmentShader = loadFile('saddleshader.frag')
     theShader = compileShaderProgram(vertexShader, fragmentShader)
     theBuffer = PositionNormalTextureBuffer(theShader,
-                                            createSurfacePosNormTex())
+                                            surf.createSurfacePosNormTex())
     pMatrix = projectionMatrix(1.0, 10.0, 1.0, 1.0)
     tMatrix = translationMatrix(0.0, 0.0, -5.0)
     theUniforms = Uniforms(theShader,
@@ -170,7 +178,7 @@ def display():
     theUniforms.Stop()
                            
 def main():
-    global rotX, rotY, rotZ, theUniforms
+    global rotX, rotY, rotZ, theUniforms, theBuffer, theShader, surf, surf1, surf2
     rotX, rotY, rotZ = 0.0,0.0,0.0
     pygame.init()
     screen = pygame.display.set_mode((512,512), OPENGL|DOUBLEBUF)
@@ -206,21 +214,37 @@ def main():
         # We need to rotate the CAMERA around origin, not the object
         pressed = pygame.key.get_pressed()
         if pressed[K_w]:
-            #rotX -= 0.02
+            rotX -= 0.02
             distY = -2
         if pressed[K_s]:
-            #rotX += 0.02
+            rotX += 0.02
             distY = 2
         if pressed[K_a]:
-            #rotY += 0.02
+            rotY += 0.02
             distX = -2
         if pressed[K_d]:
-            #rotY -= 0.02
+            rotY -= 0.02
             distX = 2
         if pressed[K_q]:
-            #rotZ -= 0.02
+            rotZ -= 0.02
         if pressed[K_e]:
-            #rotZ += 0.02
+            rotZ += 0.02
+        if pressed[K_1] and surf != surf1:
+            surf = surf1
+            theBuffer = PositionNormalTextureBuffer(theShader,
+                                            surf1.createSurfacePosNormTex())
+        if pressed[K_2] and surf != surf2:
+            surf = surf2
+            theBuffer = PositionNormalTextureBuffer(theShader,
+                                            surf2.createSurfacePosNormTex())
+        if pressed[K_3] and surf != surf3:
+            surf = surf3
+            theBuffer = PositionNormalTextureBuffer(theShader,
+                                                    surf3.createSurfacePosNormTex())
+        if pressed[K_4] and surf != surf4:
+            surf = surf4
+            theBuffer = PositionNormalTextureBuffer(theShader,
+                                                    surf4.createSurfacePosNormTex())
 
         theUniforms.UpdateRotation(rotX, rotY, rotZ)
 
