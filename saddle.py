@@ -180,6 +180,9 @@ def main():
     init()
     while True:
         #clock.tick(30)
+        lastMouseX = None
+        lastMouseY = None
+        
         for event in pygame.event.get():
             if event.type == QUIT:
                 return
@@ -189,6 +192,17 @@ def main():
                 if event.key == K_SPACE:
                     n = theUniforms.items['showLines']
                     theUniforms.items['showLines'] = (n+1)%2
+            if event.type == MOUSEMOTION:
+                distX = 0
+                distY = 0
+                if lastMouseX is not None and lastMouseY is not None:
+                    distX = event.pos[0] - lastMouseX
+                    distY = event.pos[1] - lastMouseY
+                # Now we have to rotate around the object by X and Y's diff.
+                # How do I do that..?
+                lastMouseX = event.pos[0]
+                lastmouseY = event.pos[1]
+                
 
         # We need to rotate the CAMERA around origin, not the object
         pressed = pygame.key.get_pressed()
