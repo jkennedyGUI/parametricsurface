@@ -12,45 +12,6 @@ from transforms import *
 from camera import *
 from surface import *
 
-def saddlePoint(s,t):
-    return [s, t, s*s-t*t, 1.0]
-def saddleNorm(s,t):
-    x,y,z = -2*s, 2*t, 1.0
-    mag = N.sqrt(x*x+y*y+z*z)
-    return [x/mag, y/mag, z/mag, 0.0]
-def saddleTex(s,t):
-    v1,v2 = s*0.5 + 0.5, t*0.5+0.5
-    return [s,t]
-def createSaddlePosNormTex():
-    """For each quad in a parametric surface, create
-       two triangles with position, normal and texture
-       coordinates."""
-    verts = []
-    inc = 0.2
-    for s in N.arange(-1,1,inc):
-        for t in N.arange(-1,1,inc):
-            p00 = saddlePoint(s,t)
-            n00 = saddleNorm(s,t)
-            t00 = saddleTex(s,t)
-            p01 = saddlePoint(s,t+inc)
-            n01 = saddleNorm(s,t+inc)
-            t01 = saddleTex(s,t+inc)
-            p10 = saddlePoint(s+inc,t)
-            n10 = saddleNorm(s+inc,t)
-            t10 = saddleTex(s+inc,t)
-            p11 = saddlePoint(s+inc,t+inc)
-            n11 = saddleNorm(s+inc,t+inc)
-            t11 = saddleTex(s+inc,t+inc)
-            
-            verts.extend(p00+n00+t00)
-            verts.extend(p10+n10+t10)
-            verts.extend(p01+n01+t01)
-
-            verts.extend(p01+n01+t01)
-            verts.extend(p11+n11+t11)
-            verts.extend(p10+n10+t10)
-
-    return N.array(verts, dtype=N.float32)
     
 def loadFile(filename):
     with open(os.path.join(os.getcwd(), filename)) as fp:
