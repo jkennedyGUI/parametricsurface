@@ -138,7 +138,7 @@ def init():
     theBuffer = PositionNormalTextureBuffer(theShader,
                                             createSurfacePosNormTex())
     pMatrix = projectionMatrix(1.0, 10.0, 1.0, 1.0)
-    tMatrix = translationMatrix(0.0, 0.0, -3.0)
+    tMatrix = translationMatrix(0.0, 0.0, -5.0)
     theUniforms = Uniforms(theShader,
                            [('light', 'vec4',
                              N.array((10,10,10,1), dtype=N.float32)),
@@ -203,21 +203,24 @@ def main():
                 lastMouseX = event.pos[0]
                 lastmouseY = event.pos[1]
                 
-
         # We need to rotate the CAMERA around origin, not the object
         pressed = pygame.key.get_pressed()
         if pressed[K_w]:
-            rotX -= 0.02
+            #rotX -= 0.02
+            distY = -2
         if pressed[K_s]:
-            rotX += 0.02
+            #rotX += 0.02
+            distY = 2
         if pressed[K_a]:
-            rotY += 0.02
+            #rotY += 0.02
+            distX = -2
         if pressed[K_d]:
-            rotY -= 0.02
+            #rotY -= 0.02
+            distX = 2
         if pressed[K_q]:
-            rotZ -= 0.02
+            #rotZ -= 0.02
         if pressed[K_e]:
-            rotZ += 0.02
+            #rotZ += 0.02
 
         theUniforms.UpdateRotation(rotX, rotY, rotZ)
 
